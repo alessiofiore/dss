@@ -62,16 +62,8 @@ public class MyVaadinUI extends UI
         calendar.setWidth("600px");
         calendar.setHeight("300px");
         calendar.addActionHandler(new CalendarActionHandler());
-        
-        GregorianCalendar start = new GregorianCalendar();
-        GregorianCalendar end   = new GregorianCalendar();
-        end.add(java.util.Calendar.HOUR, 5);       
-        
-        
-        
-        calendar.addEvent(new BasicEvent("Calendar study",
-                "Learning how to use Vaadin Calendar",
-                start.getTime(), end.getTime()));
+        calendar.setEventProvider(new ReservationEventProvider());
+        calendar.setHandler(new ReservationEventClickHandler());
         
         layout.addComponent(calendar);
     }
