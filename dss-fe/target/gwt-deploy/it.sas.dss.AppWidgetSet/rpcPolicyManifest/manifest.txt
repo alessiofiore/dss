@@ -1,0 +1,2 @@
+# Module it.sas.dss.AppWidgetSet
+# RPC service class, partial path of RPC policy file
