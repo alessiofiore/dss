@@ -4,26 +4,23 @@ import it.mdps.gestguide.ui.services.UIFacade;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.VerticalLayout;
 
-public class Home extends VerticalLayout {
+public class HomeLayout extends VerticalLayout {
 
 	private static final long serialVersionUID = -3234057581282243290L;
 	
 	private TabSheet tabSheet;
-	private UIFacade uiFacade;
 	
-	public Home(UIFacade uiFacade){
-		this.uiFacade = uiFacade;
+	public HomeLayout(UIFacade uiFacade){
 		
 		// Tab 1 content
-        Reservation l1 = new Reservation();
+        ReservationComponent l1 = new ReservationComponent();
         
         // Tab 2 content
-        School l2 = new School(uiFacade);
+        SchoolComponent l2 = new SchoolComponent(uiFacade);
         // Tab 3 content
         VerticalLayout l3 = new VerticalLayout();
         l3.setMargin(true);

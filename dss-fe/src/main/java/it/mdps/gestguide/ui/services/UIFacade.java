@@ -17,7 +17,8 @@ public class UIFacade {
 	private SpringComponentFactory componentFactory;
 	
 	public void addSchool(SchoolBean schoolBean) {
-		
+		SchoolService service = componentFactory.getComponent(SchoolService.class);
+		service.addSchool(schoolBean);
 	}
 	
 	public List<SchoolBean> getSchools() {

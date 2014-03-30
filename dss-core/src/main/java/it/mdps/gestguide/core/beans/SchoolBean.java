@@ -2,6 +2,7 @@ package it.mdps.gestguide.core.beans;
 
 public class SchoolBean {
 
+	private Long id;
 	private String nome;	
 	private String cap;
 	private String citta;
@@ -11,6 +12,19 @@ public class SchoolBean {
 	private String fax;	
 	private String email;
 	
+	
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 	/**
 	 * @return the nome
 	 */

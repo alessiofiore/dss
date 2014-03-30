@@ -1,6 +1,6 @@
 package it.mdps.gestguide.ui;
 
-import it.mdps.gestguide.ui.components.Home;
+import it.mdps.gestguide.ui.components.HomeLayout;
 import it.mdps.gestguide.ui.services.UIFacade;
 import it.mdps.gestguide.ui.utils.SpringContextHelper;
 
@@ -27,7 +27,7 @@ public class HomeUI extends UI
     	SpringContextHelper helper = new SpringContextHelper(VaadinServlet.getCurrent().getServletContext());
     	UIFacade facade = (UIFacade) helper.getBean("uiFacade");
     	
-    	Home layout = new Home(facade);
+    	HomeLayout layout = new HomeLayout(facade);
     	layout.setWidth("90%");
     	setContent(layout);
         

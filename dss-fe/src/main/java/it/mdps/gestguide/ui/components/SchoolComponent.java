@@ -28,18 +28,19 @@ import com.vaadin.ui.VerticalLayout;
 
 @Theme("mytheme")
 @SuppressWarnings("serial")
-public class School extends CustomComponent
+public class SchoolComponent extends CustomComponent
 {
 	private Table schoolList = new Table();
 	private TextField searchField = new TextField();
 	private Button addNewSchoolButton = new Button("Nuovo");
 	private Button removeSchoolButton = new Button("Cancella");
 	private Button saveSchoolButton = new Button("Salva");
-	private FormLayout editorLayout = new FormLayout();
+	private FormLayout editorForm = new FormLayout();
 	private FieldGroup editorFields = new FieldGroup();
 
 	private IndexedContainer schoolContainer;
 
+	private static final String ID = "ID";
 	private static final String NOME = "Nome sede";
 	private static final String CITTA = "Citta";
 	private static final String TELEFONO = "Telefono";
@@ -49,14 +50,12 @@ public class School extends CustomComponent
 	private static final String PROVINCIA = "Provincia";
 	private static final String CAP = "CAP";
 	
-	private static final String[] fieldNames = new String[] { NOME, TELEFONO, FAX, EMAIL, INDIRIZZO, CITTA, PROVINCIA, CAP};
+	private static final String[] fieldNames = new String[] { ID, NOME, TELEFONO, FAX, EMAIL, INDIRIZZO, CITTA, PROVINCIA, CAP};
 
 	private UIFacade uiFacade;
 	
-	public School(UIFacade uiFacade) {
-		this.uiFacade = uiFacade;
-		
-		schoolContainer = createDummyDatasource();
+	public SchoolComponent(UIFacade uiFacade) {
+		this.uiFacade = uiFacade;		
 		
 		initLayout();
 		initContactList();
@@ -71,7 +70,7 @@ public class School extends CustomComponent
 
 		VerticalLayout leftLayout = new VerticalLayout();
 		splitPanel.addComponent(leftLayout);
-		splitPanel.addComponent(editorLayout);
+		splitPanel.addComponent(editorForm);
 		leftLayout.addComponent(schoolList);
 
 		HorizontalLayout bottomLeftLayout = new HorizontalLayout();
@@ -88,17 +87,17 @@ public class School extends CustomComponent
 
 		bottomLeftLayout.setExpandRatio(searchField, 1);
 
-		editorLayout.setMargin(true);
+		editorForm.setMargin(true);
 
-		editorLayout.setVisible(false);
+		editorForm.setVisible(false);
 	}
 
 	private void initEditor() {
 
 		for (String fieldName : fieldNames) {
 			TextField field = new TextField(fieldName);
-			editorLayout.addComponent(field);
-			field.setWidth("100%");
+			editorForm.addComponent(field);
+			field.setWidth("200px");
 
 			editorFields.bind(field, fieldName);
 		}
@@ -107,7 +106,7 @@ public class School extends CustomComponent
 		buttonBarLayout.addComponent(removeSchoolButton);
 		buttonBarLayout.addComponent(saveSchoolButton);
 		
-		editorLayout.addComponent(buttonBarLayout);
+		editorForm.addComponent(buttonBarLayout);
 		editorFields.setBuffered(false);
 	}
 	
@@ -159,11 +158,13 @@ public class School extends CustomComponent
 	private void initButtons() {
 		// Add button
 		addNewSchoolButton.addClickListener(new ClickListener() {
+			@SuppressWarnings("unchecked")
 			public void buttonClick(ClickEvent event) {
 				
 				schoolContainer.removeAllContainerFilters();
 				Object contactId = schoolContainer.addItemAt(0);
 
+				schoolList.getContainerProperty(contactId, ID).setReadOnly(true);
 				schoolList.getContainerProperty(contactId, NOME).setValue("Nome");
 				schoolList.getContainerProperty(contactId, CITTA).setValue("Città");
 
@@ -184,12 +185,25 @@ public class School extends CustomComponent
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				SchoolBean schoolBean = new SchoolBean();
 				
+				Object id = schoolList.getValue();
+				schoolBean.setNome((String) schoolContainer.getContainerProperty(id, NOME).getValue());
+				schoolBean.setCitta((String) schoolContainer.getContainerProperty(id, CITTA).getValue());
+				schoolBean.setTelefono((String) schoolContainer.getContainerProperty(id, TELEFONO).getValue());
+				schoolBean.setFax((String) schoolContainer.getContainerProperty(id, FAX).getValue());
+				schoolBean.setEmail((String) schoolContainer.getContainerProperty(id, EMAIL).getValue());
+				schoolBean.setIndirizzo((String) schoolContainer.getContainerProperty(id, INDIRIZZO).getValue());
+				schoolBean.setProvincia((String) schoolContainer.getContainerProperty(id, PROVINCIA).getValue());
+				schoolBean.setCap((String) schoolContainer.getContainerProperty(id, CAP).getValue());
+				
+				uiFacade.addSchool(schoolBean);
 			}
 		});
 	}
 	/* ---------------------------------------------------------------------------- */
+	
+	
 	
 	/*
 	 * ----------------------------------------------------------------------------
@@ -198,6 +212,9 @@ public class School extends CustomComponent
 	 */
 
 	private void initContactList() {
+
+		schoolContainer = populateSchoolList();
+		
 		schoolList.setContainerDataSource(schoolContainer);
 		schoolList.setVisibleColumns(new String[] { NOME, CITTA });
 		schoolList.setSelectable(true);
@@ -208,25 +225,39 @@ public class School extends CustomComponent
 			public void valueChange(ValueChangeEvent event) {
 				Object contactId = schoolList.getValue();
 				editorFields.setItemDataSource(schoolList.getItem(contactId));
-				editorLayout.setVisible(contactId != null);
+				editorForm.setVisible(contactId != null);
 			}
 		});
 	}
 
-	// populate contact list
-	private IndexedContainer createDummyDatasource() {
+	// populate list
+	@SuppressWarnings("unchecked")
+	private IndexedContainer populateSchoolList() {
 		IndexedContainer ic = new IndexedContainer();
 
+		// initialize fields
 		for (String p: fieldNames) {
 			ic.addContainerProperty(p, String.class, "");
 		}
 		
+		// get school list
 		List<SchoolBean> schools = uiFacade.getSchools();
+		
+		// populate school list
 		for(SchoolBean s: schools) {
 			Object id = ic.addItem();
-			ic.getContainerProperty(id, NOME).setValue(s.getNome());
-			ic.getContainerProperty(id, CITTA).setValue(s.getCitta());
+			ic.getContainerProperty(id, ID).setValue(s.getId()!=null?s.getId().toString():"");
+			ic.getContainerProperty(id, ID).setReadOnly(true);
+			ic.getContainerProperty(id, NOME).setValue(s.getNome()!=null?s.getNome():"");
+			ic.getContainerProperty(id, CITTA).setValue(s.getCitta()!=null?s.getCitta():"");
+			ic.getContainerProperty(id, TELEFONO).setValue(s.getTelefono()!=null?s.getTelefono():"");
+			ic.getContainerProperty(id, FAX).setValue(s.getFax()!=null?s.getFax():"");
+			ic.getContainerProperty(id, EMAIL).setValue(s.getEmail()!=null?s.getEmail():"");
+			ic.getContainerProperty(id, INDIRIZZO).setValue(s.getIndirizzo()!=null?s.getIndirizzo():"");
+			ic.getContainerProperty(id, PROVINCIA).setValue(s.getProvincia()!=null?s.getProvincia():"");
+			ic.getContainerProperty(id, CAP).setValue(s.getCap()!=null?s.getCap():"");
 		}
+		
 		
 		return ic;
 	}

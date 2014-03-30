@@ -11,10 +11,10 @@ import com.vaadin.ui.VerticalLayout;
 
 @Theme("mytheme")
 @SuppressWarnings("serial")
-public class Reservation extends CustomComponent
+public class ReservationComponent extends CustomComponent
 {
 
-    public Reservation() {
+    public ReservationComponent() {
         final VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
         setCompositionRoot(layout);

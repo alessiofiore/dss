@@ -19,6 +19,21 @@ public class SchoolService {
 	@Autowired
 	private DaoFactory daoFactory;
 	
+	public void addSchool(SchoolBean schoolBean) {
+		Autoscuola autoscuola = new Autoscuola();
+		autoscuola.setCap(schoolBean.getCap());
+		autoscuola.setCitta(schoolBean.getCitta());
+		autoscuola.setEmail(schoolBean.getEmail());
+		autoscuola.setFax(schoolBean.getFax());
+		autoscuola.setIndirizzo(schoolBean.getIndirizzo());
+		autoscuola.setNome(schoolBean.getNome());
+		autoscuola.setProvincia(schoolBean.getProvincia());
+		autoscuola.setTelefono(schoolBean.getTelefono());
+		
+		IAutoscuolaDao autoscuolaDao = daoFactory.getAutoscuolaDao();
+		autoscuolaDao.create(autoscuola);
+	}
+	
 	public List<SchoolBean> getSchools() {
 		IAutoscuolaDao autoscuolaDao = daoFactory.getAutoscuolaDao();
 		List<Autoscuola> schools = autoscuolaDao.findAll();
@@ -27,6 +42,7 @@ public class SchoolService {
 		
 		for(Autoscuola a: schools) {
 			SchoolBean bean =  new SchoolBean();
+			bean.setId(a.getIdAutoscuola());
 			bean.setCap(a.getCap());
 			bean.setCitta(a.getCitta());
 			bean.setEmail(a.getEmail());
