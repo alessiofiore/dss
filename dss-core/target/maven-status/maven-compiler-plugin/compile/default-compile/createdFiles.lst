@@ -1,0 +1,12 @@
+it/sas/dss/database/model/Prenotazione.class
+it/sas/dss/database/model/Iscrizione.class
+it/sas/dss/database/model/Mezzo.class
+it/sas/dss/database/dao/AutoscuolaDao.class
+it/sas/dss/database/model/Cliente.class
+it/sas/dss/database/model/Istruttore.class
+it/sas/dss/database/model/Consorzio.class
+it/sas/dss/database/model/Patente.class
+it/sas/dss/database/model/Autoscuola.class
+it/sas/dss/database/dao/IAutoscuolaDao.class
+it/sas/dss/database/dao/GenericDao.class
+it/sas/dss/database/dao/IGenericDao.class

@@ -1,3 +1,7 @@
-it/sas/dss/MyVaadinUI$1.class
-it/sas/dss/MyVaadinUI$Servlet.class
-it/sas/dss/MyVaadinUI.class
+it/sas/dss/ui/ReservationEventClickHandler.class
+it/sas/dss/ui/ReservationEvent.class
+it/sas/dss/ui/ReservationEventProvider.class
+it/sas/dss/ui/MyBlurListener.class
+it/sas/dss/ui/MyVaadinUI.class
+it/sas/dss/ui/MyVaadinUI$Servlet.class
+it/sas/dss/ui/CalendarActionHandler.class
